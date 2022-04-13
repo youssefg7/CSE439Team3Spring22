@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 from tokenization import get_tokens_list
 from plot import tiny_transitions
 
@@ -6,20 +6,20 @@ from plot import tiny_transitions
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1023, 610)
+        MainWindow.resize(1080, 860)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(670, 60, 141, 51))
+        self.pushButton.setGeometry(QtCore.QRect(170, 230, 150, 50))
         self.pushButton.setObjectName("pushButton")
-        self.plainTextEdit = QtWidgets.QPlainTextEdit(self.centralwidget)
-        self.plainTextEdit.setGeometry(QtCore.QRect(240, 20, 391, 131))
-        self.plainTextEdit.setObjectName("plainTextEdit")
+        self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
+        self.textEdit.setGeometry(QtCore.QRect(50, 60, 400, 150))
+        self.textEdit.setObjectName("textEdit")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(80, 60, 151, 41))
+        self.label.setGeometry(QtCore.QRect(50, 20, 150, 40))
         self.label.setObjectName("label")
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(10, 210, 361, 321))
+        self.tableWidget.setGeometry(QtCore.QRect(550, 60, 400, 320))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(4)
         self.tableWidget.setRowCount(0)
@@ -32,17 +32,20 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(3, item)
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(30, 180, 81, 31))
+        self.label_2.setGeometry(QtCore.QRect(550, 20, 80, 40))
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(450, 180, 51, 31))
+        self.label_3.setGeometry(QtCore.QRect(40, 360, 60, 40))
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(670, 120, 261, 41))
+        self.label_4.setGeometry(QtCore.QRect(140, 300, 260, 40))
         self.label_4.setObjectName("label_4")
+        self.webEngineView = QtWebEngineWidgets.QWebEngineView(self.centralwidget)
+        self.webEngineView.setGeometry(QtCore.QRect(30, 400, 1000, 400))
+        self.webEngineView.setObjectName("webEngineView")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1023, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1080, 26))
         self.menubar.setObjectName("menubar")
         self.menuHome = QtWidgets.QMenu(self.menubar)
         self.menuHome.setObjectName("menuHome")
@@ -64,7 +67,8 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Tokenize Code"))
         self.pushButton.clicked.connect(self.onClickTokenize)
         self.label.setText(_translate("MainWindow", "Insert your code here:"))
-        self.plainTextEdit.setPlaceholderText(
+        
+        self.textEdit.setPlaceholderText(
         """Example:
             IF 1 THEN
             x := y;
@@ -81,6 +85,10 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Current State"))
         item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "Next State"))
+        self.tableWidget.setColumnWidth(0, 70)
+        self.tableWidget.setColumnWidth(1, 70)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 100)
         self.label_2.setText(_translate("MainWindow", "Tokens List:"))
         self.label_3.setText(_translate("MainWindow", "DFA:"))
         self.label_4.setText(_translate("MainWindow",u"<html><head/><body><h2><span style=\" color:#ff0000;\">Invalid IF statement!!!</span></h2></body></html>"))
@@ -89,13 +97,16 @@ class Ui_MainWindow(object):
         self.menuAbout.setTitle(_translate("MainWindow", "About"))
 
     def onClickTokenize(self):
-        input_code = str(self.plainTextEdit.toPlainText())
+        input_code = str(self.textEdit.toPlainText())
         tokens = self.get_tokens_tabledata(input_code)
         if tokens is None:
+            self.webEngineView.close()
             self.label_4.show()
             self.tableWidget.setRowCount(0)
         else:
             self.label_4.hide()
+            self.webEngineView.load(QtCore.QUrl.fromLocalFile("\DFA.html"))
+            self.webEngineView.show()
             self.tableWidget.setRowCount(len(tokens))
             row = 0
             for token in tokens:
