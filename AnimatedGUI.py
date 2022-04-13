@@ -1,3 +1,5 @@
+import copy
+
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 from tokenization import get_tokens_list
 from plot import tiny_transitions, G
@@ -53,7 +55,7 @@ class Ui_MainWindow(object):
         self.webEngineView.setObjectName("webEngineView")
 
         self.toolButton = QtWidgets.QToolButton(self.centralwidget)
-        self.toolButton.setGeometry(40, 760, 30, 30)
+        self.toolButton.setGeometry(40, 410, 80, 40)
         self.toolButton.setObjectName("toolButton")
 
         MainWindow.setCentralWidget(self.centralwidget)
@@ -82,16 +84,16 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Tokenize Code"))
         self.pushButton.clicked.connect(self.onClickTokenize)
         self.label.setText(_translate("MainWindow", "Insert your code here:"))
-        
+
         self.textEdit.setPlaceholderText(
-        """Example:
-            IF 1 THEN
-            x := y;
-            ELSE IF 2 THEN
-            x := z;
-            ELSE
-            x:= 0;
-            END""")
+            """Example:
+                IF 1 THEN
+                x := y;
+                ELSE IF 2 THEN
+                x := z;
+                ELSE
+                x:= 0;
+                END""")
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Token"))
         item = self.tableWidget.horizontalHeaderItem(1)
@@ -106,9 +108,10 @@ class Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(3, 100)
         self.label_2.setText(_translate("MainWindow", "Tokens List:"))
         self.label_3.setText(_translate("MainWindow", "DFA:"))
-        self.label_4.setText(_translate("MainWindow",u"<html><head/><body><h2><span style=\" color:#ff0000;\">Invalid IF statement!!!</span></h2></body></html>"))
+        self.label_4.setText(_translate("MainWindow",
+                                        u"<html><head/><body><h2><span style=\" color:#ff0000;\">Invalid IF statement!!!</span></h2></body></html>"))
         self.label_4.hide()
-        self.toolButton.setText(">>>")
+        self.toolButton.setText("Next >>")
         self.toolButton.clicked.connect(self.OnClickNextState)
         self.toolButton.setDisabled(True)
         self.menuHome.setTitle(_translate("MainWindow", "Home"))
@@ -116,6 +119,7 @@ class Ui_MainWindow(object):
 
     def onClickTokenize(self):
         input_code = str(self.textEdit.toPlainText())
+        self.G = copy.deepcopy(G)
         self.tokens = self.get_tokens_tabledata(input_code)
         if self.tokens is None:
             self.webEngineView.close()
@@ -124,17 +128,19 @@ class Ui_MainWindow(object):
             self.toolButton.setDisabled(True)
         else:
             self.label_4.hide()
+            G.save_graph("DFA.html")
             self.webEngineView.load(QtCore.QUrl.fromLocalFile("\DFA.html"))
             self.webEngineView.show()
             self.toolButton.setDisabled(False)
             self.tableWidget.setRowCount(len(self.tokens))
-            row = 0
-            for token in self.tokens:
-                self.tableWidget.setItem(row, 0, QtWidgets.QTableWidgetItem(token["token"]))
-                self.tableWidget.setItem(row, 1, QtWidgets.QTableWidgetItem(token["type"]))
-                self.tableWidget.setItem(row, 2, QtWidgets.QTableWidgetItem(token["current"]))
-                self.tableWidget.setItem(row, 3, QtWidgets.QTableWidgetItem(token["next"]))
-                row = row + 1
+            self.n = 0
+            # row = 0
+            # for token in self.tokens:
+            #     self.tableWidget.setItem(row, 0, QtWidgets.QTableWidgetItem(token["token"]))
+            #     self.tableWidget.setItem(row, 1, QtWidgets.QTableWidgetItem(token["type"]))
+            #     self.tableWidget.setItem(row, 2, QtWidgets.QTableWidgetItem(token["current"]))
+            #     self.tableWidget.setItem(row, 3, QtWidgets.QTableWidgetItem(token["next"]))
+            #     row = row + 1
 
     def get_tokens_tabledata(self, input_code):
         tokens_list = get_tokens_list(input_code)
@@ -150,11 +156,34 @@ class Ui_MainWindow(object):
             return tokens_list
 
     def OnClickNextState(self):
-        self.tokens
-        print("sdf")
+        if self.n < len(self.tokens):
+            token = self.tokens[self.n]
+            self.tableWidget.setItem(self.n, 0, QtWidgets.QTableWidgetItem(token["token"]))
+            self.tableWidget.setItem(self.n, 1, QtWidgets.QTableWidgetItem(token["type"]))
+            self.tableWidget.setItem(self.n, 2, QtWidgets.QTableWidgetItem(token["current"]))
+            self.tableWidget.setItem(self.n, 3, QtWidgets.QTableWidgetItem(token["next"]))
+            self.G.nodes[int(token["current"]) - 1]["color"] = 'lime'
+            self.G.nodes[int(token["next"]) - 1]["color"] = {"background": 'yellow', "border": 'red'}
+            self.G.save_graph("DFA.html")
+            self.redisplayDFA()
+        else:
+            self.G.nodes[int(self.tokens[-1]["next"]) - 1]["color"] = {"background": 'lime', "border": 'blue'}
+            self.G.save_graph("DFA.html")
+            self.redisplayDFA()
+            self.toolButton.setDisabled(True)
+            #self.toolButton.setText("Repeat?")
+            #self.n = 0
+        self.n = self.n + 1
+
+    def redisplayDFA(self):
+        self.webEngineView.close()
+        self.webEngineView.load(QtCore.QUrl.fromLocalFile("\DFA.html"))
+        self.webEngineView.show()
+
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

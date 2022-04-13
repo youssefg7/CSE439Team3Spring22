@@ -37,7 +37,7 @@ node_pos = {
     '6': (600, 200),
     '7': (700, 200),
     '8': (700, 100),
-    '9': (800, 100),
+    '9': (800, 40),
     '10': (400, 0),
     '11': (900, 200),
     '12': (1000, 200),
@@ -51,7 +51,18 @@ G = Network(height='100%', width='100%', directed=True)
 G.hrepulsion()
 for state in S.states:
     G.add_node(int(state), shape="ellipse", physics=False, x=node_pos[state][0], y=node_pos[state][1])
+
+G.nodes[0]["color"] = 'yellow'
+G.nodes[0]["title"] = "Initial State"
+
+G.nodes[14]["color"] = {"background": 'DodgerBlue', "border": 'blue'}
+G.nodes[14]["borderWidth"] = 5
+G.nodes[14]["borderWidthSelected"] = 5
+G.nodes[14]["title"] = "Goal State"
+
 G.nodes[15]["label"] = 'D'
+G.nodes[15]["color"] = 'DarkGray'
+G.nodes[15]["title"] = "Dead State"
 
 for k in S.states:
     for kk in S.transitions[k]:
@@ -63,6 +74,14 @@ var options = {
                     "smooth": {
                         "enabled" : true
                     }
+                  },
+                  "interaction": {
+                    "hover": true,
+                    "keyboard": {
+                      "enabled": true
+                    },
+                    "multiselect": true,
+                    "navigationButtons": true
                   }
                 }
 """)
