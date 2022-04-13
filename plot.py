@@ -66,7 +66,7 @@ var options = {
                   }
                 }
 """)
-G.show("DFA.html")
+G.save_graph("DFA.html")
 
 
 

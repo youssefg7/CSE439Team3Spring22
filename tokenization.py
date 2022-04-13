@@ -1,30 +1,21 @@
-# import re
-#
-# x = input()
-# y = re.search('^(IF [0-9]+ THEN( [_a-zA-Z][_a-zA-Z0-9]* := ([_a-zA-Z]+[_a-zA-Z0-9]*|[0-9]+);)+'
-#               '( ELSE IF NUM THEN ([_a-zA-Z][_a-zA-Z0-9]* := ([_a-zA-Z][_a-zA-Z0-9]|[0-9]+);)+)*'
-#               '( ELSE ([_a-zA-Z][_a-zA-Z0-9]* := ([_a-zA-Z][_a-zA-Z0-9]*|[0-9]+);)+)? END)+$', x)
-#
-# if y is not None:
-#     print(f'The recognized expression: "{y.string}"')
-#     print(f"Its tokens are:")
-#     tokens = re.findall('IF|[0-9]+|THEN|ELSE|END|[_a-zA-Z][_a-zA-Z0-9]*|:=|;', y.string)
-#     for i in range(len(tokens)):
-#         print(f'{i + 1} : {tokens[i]}')
-#
-# else :
-#     print('Invalid Input')
 import re
 
 
 def get_tokens_list(input_code):
-    y = re.search('^(IF [0-9]+ THEN( [_a-zA-Z][_a-zA-Z0-9]* := ([_a-zA-Z]+[_a-zA-Z0-9]*|[0-9]+);)+'
-                  '( ELSE IF NUM THEN ([_a-zA-Z][_a-zA-Z0-9]* := ([_a-zA-Z][_a-zA-Z0-9]|[0-9]+);)+)*'
-                  '( ELSE ([_a-zA-Z][_a-zA-Z0-9]* := ([_a-zA-Z][_a-zA-Z0-9]*|[0-9]+);)+)? END)+$', input_code)
+    # y = re.search('^(IF [0-9]+ THEN ([_a-zA-Z][_a-zA-Z0-9]* := ([_a-zA-Z]+[_a-zA-Z0-9]*|[0-9]+);)+'
+    #               '( ELSE IF [0-9]+ THEN ([_a-zA-Z][_a-zA-Z0-9]* := ([_a-zA-Z]+[_a-zA-Z0-9]*|[0-9]+);)+)*'
+    #               '( ELSE ([_a-zA-Z][_a-zA-Z0-9]* := ([_a-zA-Z]+[_a-zA-Z0-9]*|[0-9]+);)+)? END)+$', input_code)
+    NUM = "([0-9]+)"
+    ID = "([_a-zA-Z]\w*)"
+    STMT = f"({ID}\s*:=\s*({NUM}|{ID})\s*;\s*)"
+    IFBODY = f"(IF\s+{NUM}\s+THEN\s+({STMT})+\s*)"
+    REGEX = f"(\s*{IFBODY}((ELSE\s+{IFBODY})+)?(ELSE\s+({STMT})+)?END\s*)"
+    y = re.search(REGEX, input_code)
 
-    if y is not None:
-        #print(f'The recognized expression: "{y.string}"')
-        #print(f"Its tokens are:")
+    if y is None:
+        print("Invalid IF statement")
+        return None
+    else:
         tokens_list = []
         tokens = re.findall('IF|[0-9]+|THEN|ELSE|END|[_a-zA-Z][_a-zA-Z0-9]*|:=|;', y.string)
         for token in tokens:
@@ -48,7 +39,3 @@ def get_tokens_list(input_code):
                 raise Exception("Invalid token returned from tokenization")
 
         return tokens_list
-
-    else:
-        print("Invalid IF statement")
-        return None
