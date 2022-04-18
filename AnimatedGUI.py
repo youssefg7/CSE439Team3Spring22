@@ -1,4 +1,5 @@
 import copy
+import os.path
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 from tokenization import get_tokens_list
@@ -121,18 +122,18 @@ class Ui_MainWindow(object):
         input_code = str(self.textEdit.toPlainText())
         self.G = copy.deepcopy(G)
         self.tokens = self.get_tokens_tabledata(input_code)
+        self.tableWidget.clearContents()
+        self.tableWidget.setRowCount(len(self.tokens))
         if self.tokens is None:
             self.webEngineView.close()
             self.label_4.show()
-            self.tableWidget.setRowCount(0)
             self.toolButton.setDisabled(True)
         else:
             self.label_4.hide()
             G.save_graph("DFA.html")
-            self.webEngineView.load(QtCore.QUrl.fromLocalFile("\DFA.html"))
+            self.webEngineView.load(QtCore.QUrl.fromLocalFile(os.path.abspath("DFA.html")))
             self.webEngineView.show()
             self.toolButton.setDisabled(False)
-            self.tableWidget.setRowCount(len(self.tokens))
             self.n = 0
             # row = 0
             # for token in self.tokens:
@@ -150,7 +151,11 @@ class Ui_MainWindow(object):
             current = '1'
             for token in tokens_list:
                 token["current"] = current
-                next = tiny_transitions[current][token["type"]]
+                if token["type"] not in tiny_transitions[current]:
+                    next = '16'
+                    self.G.add_edge(int(current), 16)
+                else:
+                    next = tiny_transitions[current][token["type"]]
                 token["next"] = next
                 current = next
             return tokens_list
@@ -177,7 +182,7 @@ class Ui_MainWindow(object):
 
     def redisplayDFA(self):
         self.webEngineView.close()
-        self.webEngineView.load(QtCore.QUrl.fromLocalFile("\DFA.html"))
+        self.webEngineView.load(QtCore.QUrl.fromLocalFile(os.path.abspath("DFA.html")))
         self.webEngineView.show()
 
 

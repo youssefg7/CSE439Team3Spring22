@@ -73,6 +73,9 @@ var options = {
                   "edges": {
                     "smooth": {
                         "enabled" : true
+                    },
+                    "color": {
+                        "inherit" : false
                     }
                   },
                   "interaction": {
