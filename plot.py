@@ -18,7 +18,7 @@ tiny_transitions = {
     '11': {':=': '12'},
     '12': {'ID': '13', 'NUM': '13'},
     '13': {';': '14'},
-    '14': {'END': '15'},
+    '14': {'END': '15', 'ID': '11'},
     '15': {},
     '16': {}
 }
@@ -89,29 +89,3 @@ var options = {
                 }
 """)
 G.save_graph("DFA.html")
-
-
-
-
-# G = nx.DiGraph()
-# G.add_nodes_from(S.states)
-#
-# edges_label = {}
-# for k in S.transitions:
-#     for kk in S.transitions[k]:
-#         G.add_edge(k, S.transitions[k][kk])
-#         edges_label[(k, S.transitions[k][kk])] = kk
-#
-# pos = nx.circular_layout(G)
-# nx.draw_networkx_nodes(G, pos,
-#                        cmap=plt.get_cmap('Greens'),
-#                        node_size=500)
-#
-# nx.draw_networkx_edges(G, pos, edgelist=G.edges(), edge_color='black')
-# nx.draw_networkx_edge_labels(
-#     G, pos,
-#     edge_labels=edges_label,
-#     font_color='red'
-# )
-# nx.draw_networkx_labels(G, pos)
-# plt.show()

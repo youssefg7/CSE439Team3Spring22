@@ -13,7 +13,7 @@ def get_tokens_list(input_code):
     ################
 
     tokens_list = []
-    tokens = re.findall('IF|[0-9]+|THEN|ELSE|END|[_a-zA-Z][_a-zA-Z0-9]*|:=|;', input_code)
+    tokens = re.findall(r"IF|[0-9]+|THEN|ELSE|END|[_a-zA-Z][_a-zA-Z0-9]*|:=|;", input_code)
     for token in tokens:
         if token == "IF":
             tokens_list.append({"token": token, "type": "IF"})
@@ -27,9 +27,9 @@ def get_tokens_list(input_code):
             tokens_list.append({"token": token, "type": ":="})
         elif token == ";":
             tokens_list.append({"token": token, "type": ";"})
-        elif re.search("[0-9]+", token) is not None:
+        elif re.fullmatch("[0-9]+", token) is not None:
             tokens_list.append({"token": token, "type": "NUM"})
-        elif re.search("[_a-zA-Z][_a-zA-Z0-9]*", token) is not None:
+        elif re.fullmatch("[_a-zA-Z][_a-zA-Z0-9]*", token) is not None:
             tokens_list.append({"token": token, "type": "ID"})
         else:
             raise Exception("Invalid token returned from tokenization")
