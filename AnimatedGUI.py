@@ -124,7 +124,7 @@ class Ui_MainWindow(object):
         self.tokens = self.get_tokens_tabledata(input_code)
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(len(self.tokens))
-        if self.tokens is None:
+        if len(self.tokens) == 0:
             self.webEngineView.close()
             self.label_4.show()
             self.toolButton.setDisabled(True)
@@ -163,6 +163,8 @@ class Ui_MainWindow(object):
     def OnClickNextState(self):
         if self.n < len(self.tokens):
             token = self.tokens[self.n]
+            if int(token["next"]) == 16:
+                self.label_4.show()
             self.tableWidget.setItem(self.n, 0, QtWidgets.QTableWidgetItem(token["token"]))
             self.tableWidget.setItem(self.n, 1, QtWidgets.QTableWidgetItem(token["type"]))
             self.tableWidget.setItem(self.n, 2, QtWidgets.QTableWidgetItem(token["current"]))
