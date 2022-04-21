@@ -31,9 +31,7 @@ def get_tokens_list(input_code):
             tokens_list.append({"token": token, "type": "NUM"})
         elif re.search("[_a-zA-Z][_a-zA-Z0-9]*", token) is not None:
             tokens_list.append({"token": token, "type": "ID"})
-        elif token == " ":
-            print("done")
-        else:
+        elif token != " ":
             tokens_list.append({"token": token, "type": "error"})
 
     return tokens_list
