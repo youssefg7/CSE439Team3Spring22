@@ -9,8 +9,11 @@ def get_tokens_list(input_code):
     ID = "([_a-zA-Z]\w*)"
     STMT = f"({ID}\s*:=\s*({NUM}|{ID})\s*;\s*)"
     IFBODY = f"(IF\s+{NUM}\s+THEN\s+({STMT})+\s*)"
-    REGEX = f"(\s*{IFBODY}((ELSE\s+{IFBODY})+)?(ELSE\s+({STMT})+)?END\s*)"
+    REGEX = f"(^\s*{IFBODY}((ELSE\s+{IFBODY})+)?(ELSE\s+({STMT})+)?END\s*$)"
     ################
+
+    if re.search(REGEX, input_code) is None:
+        print("Invalid Input")
 
     tokens_list = []
     tokens = re.findall('IF|[0-9]+|THEN|ELSE|END|[_a-zA-Z][_a-zA-Z0-9]*|:=|;|.', input_code)
