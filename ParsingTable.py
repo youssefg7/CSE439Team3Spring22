@@ -181,6 +181,7 @@ parsing_table = [
     }
 ]
 
+
 production_rules = [
     (),
     # Rule 1

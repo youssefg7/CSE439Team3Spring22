@@ -1,4 +1,6 @@
 from ParsingTable import parsing_table, production_rules
+
+
 class Parser:
     def __init__(self):
         self.table = parsing_table
