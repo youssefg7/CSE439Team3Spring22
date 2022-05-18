@@ -9,11 +9,14 @@ def get_tokens_list(input_code):
     ID = "([_a-zA-Z]\w*)"
     STMT = f"({ID}\s*:=\s*({NUM}|{ID})\s*;\s*)"
     IFBODY = f"(IF\s+{NUM}\s+THEN\s+({STMT})+\s*)"
-    REGEX = f"(\s*{IFBODY}((ELSE\s+{IFBODY})+)?(ELSE\s+({STMT})+)?END\s*)"
+    REGEX = f"(^\s*{IFBODY}((ELSE\s+{IFBODY})+)?(ELSE\s+({STMT})+)?END\s*$)"
     ################
 
+    if re.search(REGEX, input_code) is None:
+        print("Invalid Input")
+
     tokens_list = []
-    tokens = re.findall(r"IF|[0-9]+|THEN|ELSE|END|[_a-zA-Z][_a-zA-Z0-9]*|:=|;", input_code)
+    tokens = re.findall('IF|[0-9]+|THEN|ELSE|END|[_a-zA-Z][_a-zA-Z0-9]*|:=|;|.', input_code)
     for token in tokens:
         if token == "IF":
             tokens_list.append({"token": token, "type": "IF"})
@@ -31,8 +34,8 @@ def get_tokens_list(input_code):
             tokens_list.append({"token": token, "type": "NUM"})
         elif re.fullmatch("[_a-zA-Z][_a-zA-Z0-9]*", token) is not None:
             tokens_list.append({"token": token, "type": "ID"})
-        else:
-            raise Exception("Invalid token returned from tokenization")
+        elif token != " ":
+            tokens_list.append({"token": token, "type": "error"})
 
     return tokens_list
 
