@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>808</width>
+    <height>620</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>821</width>
+      <height>621</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QWidget#widget{
+background-color: qlineargradient(spread:pad, x1:0.489474, y1:1, x2:0.473684, y2:0, stop:0 rgba(6, 96, 159, 211), stop:1 rgba(255, 255, 255, 255));
+}</string>
+    </property>
+    <widget class="QLabel" name="welcomeLabel">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>190</y>
+       <width>431</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+font: 75 italic 30pt &quot;Georgia&quot;;</string>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; font-style:normal;&quot;&gt;Welcome to&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; font-style:normal;&quot;&gt;CSE439 Group 3 Project&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="logoLabel">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>10</y>
+       <width>171</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>res/logo.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="scannerPushButton">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>440</y>
+       <width>261</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 75 20pt &quot;Georgia&quot;;
+background-color: rgb(255, 255, 255);
+border-radius:35px;
+color: rgb(6, 96, 159)</string>
+     </property>
+     <property name="text">
+      <string>Scanner</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="parserPushButton">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>440</y>
+       <width>261</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 75 20pt &quot;Georgia&quot;;
+background-color: rgb(255, 255, 255);
+border-radius:35px;
+color: rgb(6, 96, 159)</string>
+     </property>
+     <property name="text">
+      <string>Parser</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="welcomeLabel_2">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>290</y>
+       <width>431</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+font: 75 italic 30pt &quot;Georgia&quot;;</string>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt; font-weight:600; font-style:normal;&quot;&gt;TINY Language Compiler&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="logo.qrc"/>
+  <include location="goto.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -2,15 +2,18 @@ import copy
 import os.path
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
-from tokenization import get_tokens_list
+from Scanner import get_tokens_list
 from plot import tiny_transitions, G
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1080, 860)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+class Ui_MainWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(Ui_MainWindow, self).__init__()
+        self.setupUi()
+    def setupUi(self):
+        self.setObjectName("MainWindow")
+        self.resize(1080, 860)
+        self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
@@ -59,25 +62,25 @@ class Ui_MainWindow(object):
         self.toolButton.setGeometry(40, 410, 80, 40)
         self.toolButton.setObjectName("toolButton")
 
-        MainWindow.setCentralWidget(self.centralwidget)
+        self.setCentralWidget(self.centralwidget)
 
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1080, 26))
         self.menubar.setObjectName("menubar")
         self.menuHome = QtWidgets.QMenu(self.menubar)
         self.menuHome.setObjectName("menuHome")
         self.menuAbout = QtWidgets.QMenu(self.menubar)
         self.menuAbout.setObjectName("menuAbout")
-        MainWindow.setMenuBar(self.menubar)
+        self.setMenuBar(self.menubar)
 
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar = QtWidgets.QStatusBar(self)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        self.setStatusBar(self.statusbar)
         self.menubar.addAction(self.menuHome.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi(self)
+        QtCore.QMetaObject.connectSlotsByName(self)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -192,8 +195,9 @@ if __name__ == "__main__":
     import sys
 
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
+    #MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    ui.show()
+    #ui.setupUi(MainWindow)
+    #MainWindow.show()
     sys.exit(app.exec_())
